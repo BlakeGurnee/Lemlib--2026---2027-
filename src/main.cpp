@@ -12,11 +12,10 @@ void initialize() {
 	pros::delay(500);
 
     // Initialize the LCD and show the splash screen
-     pros::lcd::initialize();
-     showSplashScreen();
+    pros::lcd::initialize();
+    showSplashScreen();
 
     chassis.calibrate(); // calibrate sensors
-
 	
 
 	controller.rumble(".");

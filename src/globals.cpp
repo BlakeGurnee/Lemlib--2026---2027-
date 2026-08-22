@@ -2,13 +2,16 @@
 #include "globals.hpp"
 
 // -------- MOTORS --------//
-pros::Motor lowerIntake(-4, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
-pros::Motor upperIntake(-5, pros::v5::MotorGears::blue); // Motor is a blue motor on port 5 and is reversed
+pros::Motor intakeMotor(-4, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
+
+pros::Motor cascadeMotor1(-6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed
+pros::Motor cascadeMotor2(-7, pros::v5::MotorGears::blue); // Motor is a blue motor on port 7 and is reversed
+
+pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed
+pros::Motor rollerSpiner(-9, pros::v5::MotorGears::green); // Motor is a half motor on port 9 and is reversed
 
 // -------- PNEUMATICS --------//
-pros::adi::Pneumatics descorePiston('A', false); // Starts descore in the false (Down) position when the code starts in port A
-pros::adi::Pneumatics matchloadPiston('B', false); // Starts matchload in the false (Up) position when the code starts in port B
-pros::adi::Pneumatics centerGoalPiston('C', false); // Starts center goal in the false (Down) position when the code starts in port C
+
 
 // -------- SENSORS --------//
 pros::AIVision ai_sensor(2);
@@ -19,9 +22,9 @@ pros::AIVision ai_sensor(2);
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-// motor groups
-pros::MotorGroup leftMotors({-5, 4}, pros::MotorGearset::blue);
-pros::MotorGroup rightMotors({6, -9}, pros::MotorGearset::blue);
+// Drivetrain motors
+pros::MotorGroup leftmotors({1, 2});
+pros::MotorGroup rightmotors({3, 4});
 
 // IMU
 pros::Imu imu(10);
@@ -35,8 +38,8 @@ lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 
 // drivetrain
 lemlib::Drivetrain drivetrain(
-    &leftMotors,
-    &rightMotors,
+    &leftmotors,
+    &rightmotors,
     10,
     lemlib::Omniwheel::NEW_4,
     450,
@@ -67,6 +70,8 @@ lemlib::Chassis chassis(
 // -------- TitanReset Components --------- //
 
 // sensors
+
+// parallel offset, perpendicular offset, port
 tr_sensor north({5.823, -4.694}, 10);
 tr_sensor east({5.137, 3.23}, 11);
 tr_sensor south({4.861, 5.25}, 12);
@@ -74,3 +79,5 @@ tr_sensor west({5.137, 3.744}, 13);
 
 // dsr system
 tr_chassis dsr_system(&chassis, {&north, &east, &south, &west});
+
+// tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west}, tr_fields::metal); if you want to use the metal field, uncomment this line and comment out the line above it

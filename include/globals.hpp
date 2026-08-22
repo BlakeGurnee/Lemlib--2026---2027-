@@ -5,8 +5,8 @@
 #include "TitanReset/TitanReset.hpp"
 
 // -------- MOTORS -------- //
-extern pros::Motor lowerIntake;
-extern pros::Motor upperIntake;
+extern pros::Motor clawMotor;
+extern pros::Motor liftMotor;
 
 
 // -------- PNEUMATICS -------- //
@@ -16,6 +16,7 @@ extern pros::adi::Pneumatics centerGoalPiston;
 
 // -------- SENSORS --------//
 extern pros::AIVision ai_sensor;
+extern pros::Rotation claw_sensor;
 
 // -------- ESSENTIAL DRIVETRAIN COMPONENTS -------- //
 

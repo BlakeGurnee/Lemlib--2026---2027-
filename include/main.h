@@ -46,7 +46,8 @@
 #include "helpers.hpp"
 #include "splash_screens.hpp"
 #include "TitanReset/TitanReset.hpp"
-
+#include "mvlib/api.hpp"
+#include "mvlib/Optional/lemlib.hpp"
 extern lemlib::Chassis chassis;
 
 
