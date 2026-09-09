@@ -1,14 +1,5 @@
 #include "main.h"
 
-void rotateClaw(int amount) 
-{
-  int target = amount;
-  double kp = 0.5;
-  double error = target - claw_sensor.get_position();
-  double velocity = kp * error;
-  clawMotor.move(velocity);
-}
-
 void driveInches(double inches, int speed)
   {
      double wheelDiameter = 2.75; // Diameter of the wheel in inches
