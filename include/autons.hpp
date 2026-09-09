@@ -1,7 +1,7 @@
 #pragma once
 
 // Custon Autons in separate files //
-void MainAuton();
-void ElimAuton();
-void swp();
+void mainAuton();
+void elimAuton();
+void SWP();
 void skillsMain();

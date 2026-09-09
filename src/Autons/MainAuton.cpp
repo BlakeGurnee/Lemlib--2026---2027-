@@ -2,16 +2,17 @@
 
 /* 
 ---- Auton Mirroring Rules -----
-Function Rule Example
-moveToPoint plain x, m(y) moveToPoint(-48, m(-24), t)
-turnToPointplain x, m(y) turnToPoint(-48, m(-24), t)
-turnToHeading 0° or 180° needs m() turnToHeading(m(0), t)
-turnToHeading 90° or 270° no m() turnToHeading(90, t)
-setPose always mp() setPose(mp(-62, -15, 90))
-mechanisms never mirror intake.move(127)
+
+    setPose always = setPose(mp(x, y, theta))
+
+    move to point or turn to point always wrap Y coordinate in m() moveToPoint(x, m(y), t)
+
+    turn to heading 0 or 180 always wrap in m() turnToHeading(m(0), t), If angle is 90 or 270 → leave it raw: turnToHeading(90, timeout)
+
+    mechanisms never mirror intake.move(127)
 */
 
-void MainAuton() 
+void mainAuton() 
 {
     chassis.setPose(mp(-62, -15, 90));
 }

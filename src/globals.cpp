@@ -4,14 +4,14 @@
 // -------- MOTORS --------//
 pros::Motor intakeMotor(-4, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
 
-pros::Motor cascadeMotor1(-6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed
-pros::Motor cascadeMotor2(-7, pros::v5::MotorGears::blue); // Motor is a blue motor on port 7 and is reversed
+pros::Motor cascadeMotor1(-6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed (Lift Motor 1)
+pros::Motor cascadeMotor2(-7, pros::v5::MotorGears::blue); // Motor is a blue motor on port 7 and is reversed (Lift Motor 2)
 
-pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed
-pros::Motor rollerSpiner(-9, pros::v5::MotorGears::green); // Motor is a half motor on port 9 and is reversed
+pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed (Flips out the banshee claw)
+pros::Motor rollerSpiner(-9, pros::v5::MotorGears::green); // Motor is a half motor on port 9 and is reversed (Spins the rollers on the banshee claw)
 
 // -------- PNEUMATICS --------//
-
+// None for now
 
 // -------- SENSORS --------//
 pros::AIVision ai_sensor(2);
@@ -23,8 +23,8 @@ pros::AIVision ai_sensor(2);
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // Drivetrain motors
-pros::MotorGroup leftmotors({1, 2});
-pros::MotorGroup rightmotors({3, 4});
+pros::MotorGroup leftMotors({1, 2});
+pros::MotorGroup rightMotors({3, 4});
 
 // IMU
 pros::Imu imu(10);
@@ -38,8 +38,8 @@ lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 
 // drivetrain
 lemlib::Drivetrain drivetrain(
-    &leftmotors,
-    &rightmotors,
+    &leftMotors,
+    &rightMotors,
     10,
     lemlib::Omniwheel::NEW_4,
     450,
@@ -69,7 +69,8 @@ lemlib::Chassis chassis(
 
 // -------- TitanReset Components --------- //
 
-// sensors
+
+    // -------- SENSORS --------//
 
 // parallel offset, perpendicular offset, port
 tr_sensor north({5.823, -4.694}, 10);

@@ -11,11 +11,11 @@
 void initialize() {
 	pros::delay(500);
 
+    chassis.calibrate(); // calibrate chassis
+
     // Initialize the LCD and show the splash screen
     pros::lcd::initialize();
     showSplashScreen();
-
-    chassis.calibrate(); // calibrate sensors
 	
 
 	controller.rumble(".");
@@ -72,85 +72,113 @@ void autonomous()
     
     // Run the selected autonomous routine
     switch(autonSelection) {
-        case 1:
-            // Red Left Main
+        case 1: // Red Left Main
+            pros::lcd::print(0, "Running Red Left Main");
             MIRROR = true;
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_POS, 270);
-            MainAuton();
-            break;
-            
-        case 2:
-            // Red Right Main
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
-            MainAuton();
-            break;
-            
-        case 3:
-            // Red Left Elim
-            MIRROR = true;
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_POS, 270);
-            ElimAuton();
-            break;
-            
-        case 4:
-            // Red Right Elim
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
-            ElimAuton();
-            break;
-            
-        case 5:
-            // Red SWP
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
-            swp();
-            break;
-            
-        case 6:
-            // Blue Left Main
-            MIRROR = true;
-            dsr_system.perform_dsr_init(tr_quadrant::POS_NEG, 270);
-            MainAuton();
-            break;
-            
-        case 7:
-            // Blue Right Main
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, 270);
-            MainAuton();
-            break;
-            
-        case 8:
-            // Blue Left Elim
-            MIRROR = true;
-            dsr_system.perform_dsr_init(tr_quadrant::POS_NEG, 270);
-            ElimAuton();
-            break;
-            
-        case 9:
-            // Blue Right Elim
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, 270);
-            ElimAuton();
-            break;
-            
-        case 10:
-            // Blue SWP
-            MIRROR = false;
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, 270);
-            swp();
+            mainAuton();
             break;
 
-        case 11:
-            // SKILLS
+        case 2: // Red Right Main (source)
+            pros::lcd::print(0, "Running Red Right Main");
+            MIRROR = false;
+            mainAuton();
+            break;
+
+        case 3: // Red Left Elim
+            pros::lcd::print(0, "Running Red Left Elim");
+            MIRROR = true;
+            elimAuton();
+            break;
+
+        case 4: // Red Right Elim (source)
+            pros::lcd::print(0, "Running Red Right Elim");
+            MIRROR = false;
+            elimAuton();
+            break;
+
+        case 5: // Red SWP
+            pros::lcd::print(0, "Running Red SWP");
+            SWP();
+            break;
+
+        case 6: // Blue Left Main
+            pros::lcd::print(0, "Running Blue Left Main");
+            MIRROR = true;
+            mainAuton();
+            break;
+
+        case 7: // Blue Right Main
+            pros::lcd::print(0, "Running Blue Right Main");
+            MIRROR = true;
+            mainAuton();
+            break;
+
+        case 8: // Blue Left Elim
+            pros::lcd::print(0, "Running Blue Left Elim");
+            MIRROR = true;
+            elimAuton();
+            break;
+
+        case 9: // Blue Right Elim
+            pros::lcd::print(0, "Running Blue Right Elim");
+            MIRROR = true;
+            elimAuton();
+            break;
+
+        case 10: // Blue SWP
+            pros::lcd::print(0, "Running Blue SWP");
+            SWP();
+            break;
+
+        case 11: // SKILLS
             pros::lcd::print(0, "Running SKILLS");
             skillsMain();
             break;
-            
+
         default:
-            // No selection
             pros::lcd::print(0, "No auton selected!");
             break;
     }
+}
+
+void opcontrol() {
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+  
+  // Boolean to track whether slow mode is currently on or off
+  bool slowModeOn = false;
+
+  while (true) {
+
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+            slowModeOn = !slowModeOn;
+
+            if (slowModeOn) {
+                drive_speed = DRIVE_SPEED_MAX * 0.7;
+            } else {
+                drive_speed = DRIVE_SPEED_MAX;
+            }
+        }
+
+        // Retrieve joystick values for tank control.
+        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+
+        // Scale joystick input down if slow mode is on
+        float speedRatio = drive_speed / DRIVE_SPEED_MAX;
+        leftY = leftY * speedRatio;
+        rightY = rightY * speedRatio;
+
+        chassis.tank(leftY, rightY);
+ 
+    
+    
+    /* Testing without a comp switch only
+    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) // Have the auton run if we hit the B and Down button makes it so we don't need to have a comp switch to test autons
+    {
+      autonomous();
+    }
+    */
+
+    pros::delay(20);
+  }
 }

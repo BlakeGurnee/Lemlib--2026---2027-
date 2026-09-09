@@ -35,6 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+#include "autonselector/splash_screens.hpp"
 
 /**
  * You should add more #includes here
@@ -44,7 +45,6 @@
 #include "autons.hpp"
 #include "autonMirror.h"
 #include "helpers.hpp"
-#include "splash_screens.hpp"
 #include "TitanReset/TitanReset.hpp"
 #include "mvlib/api.hpp"
 #include "mvlib/Optional/lemlib.hpp"

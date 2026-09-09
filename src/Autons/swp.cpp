@@ -1,6 +1,6 @@
 #include "main.h"
 
-void swp() 
+void SWP() 
 {
    /*
     * The robot is in the -- quadrant

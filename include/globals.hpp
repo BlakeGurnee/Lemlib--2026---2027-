@@ -18,6 +18,13 @@ extern pros::adi::Pneumatics centerGoalPiston;
 extern pros::AIVision ai_sensor;
 extern pros::Rotation claw_sensor;
 
+// -------- Variables -------- //
+// The current max drive speed (out of 127), shared between auton and driver control
+inline float drive_speed = 127;
+
+// The max drive speed (out of 127), used to reset drive_speed when slow mode is toggled
+inline const float DRIVE_SPEED_MAX = 127;
+
 // -------- ESSENTIAL DRIVETRAIN COMPONENTS -------- //
 
 // controller
