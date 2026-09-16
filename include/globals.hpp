@@ -20,10 +20,10 @@ extern pros::Rotation claw_sensor;
 
 // -------- Variables -------- //
 // The current max drive speed (out of 127), shared between auton and driver control
-inline float drive_speed = 127;
+inline float drive_speed = 115;
 
-// The max drive speed (out of 127), used to reset drive_speed when slow mode is toggled
-inline const float DRIVE_SPEED_MAX = 127;
+// Regular/full speed — 115, not the motor's absolute max of 127
+inline const float DRIVE_SPEED_MAX = 115;
 
 // -------- ESSENTIAL DRIVETRAIN COMPONENTS -------- //
 

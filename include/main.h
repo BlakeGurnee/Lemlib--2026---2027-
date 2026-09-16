@@ -35,7 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "autonselector/splash_screens.hpp"
+#include "splash_screens.hpp"
 
 /**
  * You should add more #includes here

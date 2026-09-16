@@ -1,3 +1,3 @@
 #include "main.h"
 
-// Empty File for now...
+extern void driveInches(double inches, int speed);

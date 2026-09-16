@@ -74,25 +74,29 @@ void autonomous()
     switch(autonSelection) {
         case 1: // Red Left Main
             pros::lcd::print(0, "Running Red Left Main");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Red Left Main
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Main
             mainAuton();
             break;
 
         case 2: // Red Right Main (source)
             pros::lcd::print(0, "Running Red Right Main");
-            MIRROR = false;
+            MIRROR = false; // Set Auton Mirroring to false for Red Right Main
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Main
             mainAuton();
             break;
 
         case 3: // Red Left Elim
             pros::lcd::print(0, "Running Red Left Elim");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Red Left Elim
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Elim
             elimAuton();
             break;
 
         case 4: // Red Right Elim (source)
             pros::lcd::print(0, "Running Red Right Elim");
-            MIRROR = false;
+            MIRROR = false; // Set Auton Mirroring to false for Red Right Elim
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Elim
             elimAuton();
             break;
 
@@ -103,25 +107,29 @@ void autonomous()
 
         case 6: // Blue Left Main
             pros::lcd::print(0, "Running Blue Left Main");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Blue Left Main
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Main
             mainAuton();
             break;
 
         case 7: // Blue Right Main
             pros::lcd::print(0, "Running Blue Right Main");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Blue Right Main
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Main
             mainAuton();
             break;
 
         case 8: // Blue Left Elim
             pros::lcd::print(0, "Running Blue Left Elim");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Blue Left Elim
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Elim
             elimAuton();
             break;
 
         case 9: // Blue Right Elim
             pros::lcd::print(0, "Running Blue Right Elim");
-            MIRROR = true;
+            MIRROR = true; // Set Auton Mirroring to true for Blue Right Elim
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Elim
             elimAuton();
             break;
 
@@ -144,18 +152,22 @@ void autonomous()
 void opcontrol() {
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
   
-  // Boolean to track whether slow mode is currently on or off
-  bool slowModeOn = false;
+  // 0 = regular, 1 = medium, 2 = slow — cycles in that order each press
+  int speedMode = 0;
 
   while (true) {
 
+        // Three way speed rotation with the B button. Each press cycles through the three modes.
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-            slowModeOn = !slowModeOn;
+            // Move to the next mode, wrapping back to 0 after 2
+            speedMode = (speedMode + 1) % 3;
 
-            if (slowModeOn) {
-                drive_speed = DRIVE_SPEED_MAX * 0.7;
+            if (speedMode == 0) {
+                drive_speed = DRIVE_SPEED_MAX; // Regular Speed
+            } else if (speedMode == 1) {
+                drive_speed = DRIVE_SPEED_MAX * 0.85; // Medium Speed
             } else {
-                drive_speed = DRIVE_SPEED_MAX;
+                drive_speed = DRIVE_SPEED_MAX * 0.80; // Slow Speed
             }
         }
 

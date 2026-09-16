@@ -7,6 +7,21 @@
 LV_IMG_DECLARE(caffeine_splash);
 LV_IMG_DECLARE(caffeine_match_start);
 
+// Static field-path route pictures, one per auton -- converted the exact
+// same way as the two images above (via the LVGL image converter). See
+// route_pictures/ and CHANGES.md for how to generate/convert these.
+LV_IMG_DECLARE(route_red_left_main);
+LV_IMG_DECLARE(route_red_right_main);
+LV_IMG_DECLARE(route_red_left_elim);
+LV_IMG_DECLARE(route_red_right_elim);
+LV_IMG_DECLARE(route_red_swp);
+LV_IMG_DECLARE(route_blue_left_main);
+LV_IMG_DECLARE(route_blue_right_main);
+LV_IMG_DECLARE(route_blue_left_elim);
+LV_IMG_DECLARE(route_blue_right_elim);
+LV_IMG_DECLARE(route_blue_swp);
+LV_IMG_DECLARE(route_skills);
+
 // Team colors - Caffeine (espresso brown, cream, coffee tan, orange)
 #define CAFFEINE_ESPRESSO lv_color_make(45, 24, 20)     // dark espresso brown (background)
 #define CAFFEINE_CREAM    lv_color_make(240, 234, 224)  // cream (text/borders)
