@@ -22,6 +22,9 @@ LV_IMG_DECLARE(route_blue_right_elim);
 LV_IMG_DECLARE(route_blue_swp);
 LV_IMG_DECLARE(route_skills);
 
+// Coffee cup icon in the middle column -- also a static compiled-in image.
+LV_IMG_DECLARE(coffee_cup);
+
 // Team colors - Caffeine (espresso brown, cream, coffee tan, orange)
 #define CAFFEINE_ESPRESSO lv_color_make(45, 24, 20)     // dark espresso brown (background)
 #define CAFFEINE_CREAM    lv_color_make(240, 234, 224)  // cream (text/borders)

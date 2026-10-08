@@ -48,6 +48,7 @@
 #include "TitanReset/TitanReset.hpp"
 #include "mvlib/api.hpp"
 #include "mvlib/Optional/lemlib.hpp"
+#include "cascade.hpp"
 extern lemlib::Chassis chassis;
 
 

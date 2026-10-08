@@ -19,7 +19,9 @@ void mainAuton()
 
     // Spin Toggel to Red
     // (Insert toggel mechanism code here)
+    
 
+    /*
     // Move Backwards
     chassis.moveToPoint(0, m(-54), 1000, {.forwards = false});
 
@@ -41,6 +43,7 @@ void mainAuton()
         800,
         {.maxSpeed = 60}
     );
+    */
 
 
     // Turn to pick up pin and cup aganst the wall

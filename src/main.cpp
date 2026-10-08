@@ -2,6 +2,7 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "TitanReset/TitanReset.hpp"
 
+pros::Task* liftTask = nullptr;
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -16,6 +17,10 @@ void initialize() {
     // Initialize the LCD and show the splash screen
     pros::lcd::initialize();
     showSplashScreen();
+    
+
+    liftInit(); // lift must be fully down when the robot powers on
+    pros::Task liftTask(liftTaskLoop);
 	
 
 	controller.rumble(".");
@@ -151,6 +156,11 @@ void autonomous()
 
 void opcontrol() {
   chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+
+   // =========================================================
+  // DRIVE SPEED
+ // B = Regular → Medium → Slow
+// =========================================================
   
   // 0 = regular, 1 = medium, 2 = slow — cycles in that order each press
   int speedMode = 0;
@@ -163,13 +173,20 @@ void opcontrol() {
             speedMode = (speedMode + 1) % 3;
 
             if (speedMode == 0) {
-                drive_speed = DRIVE_SPEED_MAX; // Regular Speed
+                drive_speed = DRIVE_SPEED_MAX; // Regular 
+                controller.print(0, 0, "Regular Speed");
             } else if (speedMode == 1) {
                 drive_speed = DRIVE_SPEED_MAX * 0.85; // Medium Speed
+                controller.print(0, 0, "Medium Speed");
             } else {
                 drive_speed = DRIVE_SPEED_MAX * 0.80; // Slow Speed
+                controller.print(0, 0, "Slow Speed");
             }
         }
+
+        // =========================================================
+        // DRIVE
+        // =========================================================
 
         // Retrieve joystick values for tank control.
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
@@ -177,20 +194,68 @@ void opcontrol() {
 
         // Scale joystick input down if slow mode is on
         float speedRatio = drive_speed / DRIVE_SPEED_MAX;
+
         leftY = leftY * speedRatio;
         rightY = rightY * speedRatio;
 
         chassis.tank(leftY, rightY);
+    
+
+        //// =========================================================
+        // INTAKE
+        // L1 = Toggle IN
+        // L2 = Hold OUT
+        // =========================================================
+
+        if (controller.get_digital_new_press(DIGITAL_L1)) {
+            intakeActive = !intakeActive;
+        }
+
+        if (controller.get_digital(DIGITAL_L2)) {
+            setIntake(-127);  // Intake out while L2 is held
+        }
+        else if (intakeActive) {
+            setIntake(127);   // Intake in if toggle is active
+        }
+        else {
+            setIntake(0);     // Intake off
+        }
+
+
+        // ================================
+        // CASCADE
+        // R1 = FULL UP
+        // R2 = FULL DOWN
+        // ================================
+
+
+        if (controller.get_digital(DIGITAL_R1)) {
+            setCascade(127);  // Cascade up while R1 is held
+        }
+        else if (controller.get_digital(DIGITAL_R2)) {
+            setCascade(-127); // Cascade down while R2 is held
+        }
+        else {
+            setCascade(0);  // Cascade off
+        }
+
+        //liftUpdate(controller);
+
+
  
-    
-    
     /* Testing without a comp switch only
-    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) // Have the auton run if we hit the B and Down button makes it so we don't need to have a comp switch to test autons
+    if (controller.get_digital(DIGITAL_B) && controller.get_digital(DIGITAL_DOWN)) // Have the auton run if we hit the B and Down button makes it so we don't need to have a comp switch to test autons
     {
       autonomous();
     }
     */
 
+    // =========================================================
+    // LOOP DELAY
+    // =========================================================
+
     pros::delay(20);
   }
+
+
 }

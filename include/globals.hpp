@@ -6,24 +6,26 @@
 
 // -------- MOTORS -------- //
 extern pros::Motor clawMotor;
-extern pros::Motor liftMotor;
+extern pros::Motor intakeMotor;
+extern pros::MotorGroup cascadeMotors;
+
+extern bool intakeActive;
+extern bool cascadeActive;
 
 
 // -------- PNEUMATICS -------- //
-extern pros::adi::Pneumatics matchloadPiston;
-extern pros::adi::Pneumatics descorePiston;
-extern pros::adi::Pneumatics centerGoalPiston;
+// None for now
 
 // -------- SENSORS --------//
 extern pros::AIVision ai_sensor;
-extern pros::Rotation claw_sensor;
+extern pros::Rotation cascadeRotation;
 
 // -------- Variables -------- //
 // The current max drive speed (out of 127), shared between auton and driver control
-inline float drive_speed = 115;
+inline float drive_speed = 127;
 
 // Regular/full speed — 115, not the motor's absolute max of 127
-inline const float DRIVE_SPEED_MAX = 115;
+inline const float DRIVE_SPEED_MAX = 127;
 
 // -------- ESSENTIAL DRIVETRAIN COMPONENTS -------- //
 

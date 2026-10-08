@@ -12,8 +12,8 @@ static const char* kAutonLabels[11] = {
     "Skills",
 };
 // Static, compiled-in route pictures (same mechanism as caffeine_splash /
-// caffeine_match_start below -- converted via the LVGL image converter,
-// no SD card or gif involved). See CHANGES.md for how these were made.
+// caffeine_match_start -- converted via the LVGL image converter, no SD
+// card or gif involved). See CHANGES.md for how these were made.
 static const lv_img_dsc_t* kAutonRouteImages[11] = {
     &route_red_left_main, &route_red_right_main, &route_red_left_elim,
     &route_red_right_elim, &route_red_swp, &route_blue_left_main,
@@ -31,8 +31,6 @@ static lv_color_t accentColorFor(int index) {
 static lv_obj_t* autonButtons[11];
 static lv_obj_t* fieldImg;
 static int selectedIndex = -1;   // -1 == nothing chosen yet
-
-static void selectIndex(int index);
 
 static void selectIndex(int index) {
     if (index < 0 || index >= 11 || index == selectedIndex) return;
@@ -82,59 +80,6 @@ static void downClicked(lv_event_t* e) {
 
 static void confirmClicked(lv_event_t* e) {
     autonConfirmed = true;
-}
-
-// Small decorative coffee cup built from LVGL primitives -- no image asset needed.
-static void buildCoffeeCup(lv_obj_t* parent) {
-    lv_obj_t* cup = lv_obj_create(parent);
-    lv_obj_remove_style_all(cup);
-    lv_obj_set_size(cup, 60, 66);
-    lv_obj_center(cup);
-    lv_obj_clear_flag(cup, LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_clear_flag(cup, LV_OBJ_FLAG_SCROLLABLE);
-
-    lv_obj_t* lid = lv_obj_create(cup);
-    lv_obj_remove_style_all(lid);
-    lv_obj_set_size(lid, 44, 8);
-    lv_obj_align(lid, LV_ALIGN_TOP_MID, 0, 0);
-    lv_obj_set_style_bg_color(lid, CAFFEINE_ESPRESSO, 0);
-    lv_obj_set_style_bg_opa(lid, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(lid, 3, 0);
-
-    lv_obj_t* band = lv_obj_create(cup);
-    lv_obj_remove_style_all(band);
-    lv_obj_set_size(band, 40, 12);
-    lv_obj_align(band, LV_ALIGN_TOP_MID, 0, 10);
-    lv_obj_set_style_bg_color(band, CAFFEINE_ESPRESSO, 0);
-    lv_obj_set_style_bg_opa(band, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(band, 2, 0);
-
-    lv_obj_t* body = lv_obj_create(cup);
-    lv_obj_remove_style_all(body);
-    lv_obj_set_size(body, 38, 34);
-    lv_obj_align(body, LV_ALIGN_BOTTOM_MID, 0, 0);
-    lv_obj_set_style_bg_color(body, CAFFEINE_CREAM, 0);
-    lv_obj_set_style_bg_opa(body, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(body, 4, 0);
-
-    lv_obj_t* bean = lv_obj_create(body);
-    lv_obj_remove_style_all(bean);
-    lv_obj_set_size(bean, 12, 18);
-    lv_obj_center(bean);
-    lv_obj_set_style_bg_color(bean, CAFFEINE_ESPRESSO, 0);
-    lv_obj_set_style_bg_opa(bean, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(bean, LV_RADIUS_CIRCLE, 0);
-
-    static lv_point_t creasePts[2] = {{0, -8}, {0, 8}};
-    static lv_style_t creaseStyle;
-    lv_style_init(&creaseStyle);
-    lv_style_set_line_width(&creaseStyle, 2);
-    lv_style_set_line_color(&creaseStyle, CAFFEINE_CREAM);
-    lv_style_set_line_rounded(&creaseStyle, true);
-    lv_obj_t* crease = lv_line_create(bean);
-    lv_obj_add_style(crease, &creaseStyle, 0);
-    lv_line_set_points(crease, creasePts, 2);
-    lv_obj_align(crease, LV_ALIGN_CENTER, 6, 0);
 }
 
 // SPLASH SCREEN - Shows when robot turns on
@@ -247,9 +192,12 @@ void createAutonSelector() {
     lv_obj_set_style_text_color(downLabel, CAFFEINE_ESPRESSO, 0);
     lv_obj_center(downLabel);
 
-    buildCoffeeCup(midCont);
+    // coffee cup -- static compiled-in image, centered between the arrows
+    lv_obj_t* cupImg = lv_img_create(midCont);
+    lv_img_set_src(cupImg, &coffee_cup);
+    lv_obj_center(cupImg);
 
-    // --- right: field-path preview ---------------------------------------
+    // --- right: field-path preview (static picture) ----------------------
     lv_obj_t* fieldCont = lv_obj_create(scr);
     lv_obj_set_pos(fieldCont, 258, 12);
     lv_obj_set_size(fieldCont, 216, 216);

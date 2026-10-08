@@ -1,3 +1,4 @@
 #include "main.h"
 
-extern void driveInches(double inches, int speed);
+void setIntake(int IntakePower);
+void setCascade(int CascadePower);

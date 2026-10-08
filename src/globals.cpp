@@ -2,19 +2,21 @@
 #include "globals.hpp"
 
 // -------- MOTORS --------//
-pros::Motor intakeMotor(-4, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
-
-pros::Motor cascadeMotor1(-6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed (Lift Motor 1)
-pros::Motor cascadeMotor2(-7, pros::v5::MotorGears::blue); // Motor is a blue motor on port 7 and is reversed (Lift Motor 2)
+pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
+pros::MotorGroup cascadeMotors({12, 4});
 
 pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed (Flips out the banshee claw)
 pros::Motor rollerSpiner(-9, pros::v5::MotorGears::green); // Motor is a half motor on port 9 and is reversed (Spins the rollers on the banshee claw)
+
+bool intakeActive = false;
+bool cascadeActive = false;
 
 // -------- PNEUMATICS --------//
 // None for now
 
 // -------- SENSORS --------//
 pros::AIVision ai_sensor(2);
+pros::Rotation cascadeRotation(19);
 
 
 // -------- Essential Drivetrain Components --------//
@@ -33,14 +35,14 @@ pros::MotorGroup rightMotors({7, 8});
 pros::Imu imu(5);
 
 // horizontal tracking wheel encoder
-pros::Rotation horizontalEnc(20);
+pros::Rotation horizontalEnc(9);
 // vertical tracking wheel encoder
-pros::Rotation verticalEnc(-11);
+pros::Rotation verticalEnc(3);
 
 // horizontal tracking wheel
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -5.75);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, -0.996);
 // vertical tracking wheel
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
+lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -0.858);
 
 // drivetrain
 lemlib::Drivetrain drivetrain(
@@ -57,8 +59,7 @@ lemlib::ControllerSettings linearController(10, 0, 3, 3, 1, 100, 3, 500, 20);
 lemlib::ControllerSettings angularController(2, 0, 10, 3, 1, 100, 3, 500, 0);
 
 // sensors
-// lemlib::OdomSensors sensors(&vertical, nullptr, &horizontal, nullptr, &imu); // chassis with odom uncomment this when odom is made
-lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, &imu);
+lemlib::OdomSensors sensors(&vertical, nullptr, &horizontal, nullptr, &imu); // chassis with odom
 
 // curves
 lemlib::ExpoDriveCurve throttleCurve(3, 10, 1.019);
