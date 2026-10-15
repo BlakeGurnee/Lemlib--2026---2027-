@@ -17,8 +17,9 @@ void mainAuton()
     // Set Initial Pose
     chassis.setPose(mp(0, -70, 180));
 
-    // Spin Toggel to Red
-    // (Insert toggel mechanism code here)
+    // Spin Toggle to Red
+    // (Insert toggle mechanism code here)
+    
     
 
     /*
