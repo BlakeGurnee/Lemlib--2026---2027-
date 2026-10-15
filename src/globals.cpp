@@ -2,7 +2,7 @@
 #include "globals.hpp"
 
 // -------- MOTORS --------//
-pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
+pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed
 pros::MotorGroup cascadeMotors({12, 4});
 
 pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed (Flips out the banshee claw)
