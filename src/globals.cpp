@@ -3,20 +3,23 @@
 
 // -------- MOTORS --------//
 pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
-pros::MotorGroup cascadeMotors({12, 4});
+pros::MotorGroup liftMotors({20, -11}, pros::v5::MotorGears::red); // Motor group for the lift, motors are on ports 20 and 11 and one of them is reversed
 
-pros::Motor rollerFlipper(-8, pros::v5::MotorGears::green); // Motor is a half motor on port 8 and is reversed (Flips out the banshee claw)
-pros::Motor rollerSpiner(-9, pros::v5::MotorGears::green); // Motor is a half motor on port 9 and is reversed (Spins the rollers on the banshee claw)
-
-bool intakeActive = false;
-bool cascadeActive = false;
+bool intakeActive = false; // Intake is not active by default
+bool liftActive = false; // Lift is not moving to a target by default
 
 // -------- PNEUMATICS --------//
-// None for now
+bool clawExtended = false; // Piston is retracted by default
+pros::adi::DigitalOut clawPiston('D'); // Piston is on port D
+
+// -------- Lift Variables --------//
+bool liftGoingToTarget = false;   // true = lift is moving to a position
+double liftTarget = 0;            // where we want the lift (degrees)
+double kP = 3;                   // bigger = faster/stronger, too big = shaky
 
 // -------- SENSORS --------//
-pros::AIVision ai_sensor(2);
-pros::Rotation cascadeRotation(19);
+pros::AIVision ai_sensor(10); // Sensor for detecting AprilTags (Implementaion coming soon!)
+pros::Rotation liftSensor(16); // Lift rotation sensor on port 16
 
 
 // -------- Essential Drivetrain Components --------//
@@ -24,23 +27,26 @@ pros::Rotation cascadeRotation(19);
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-// Drivetrain motors
+// Drivetrain motors \\ 
 
 // Left motor group
-pros::MotorGroup leftMotors({-21, -10});
+pros::MotorGroup leftMotors({-18, -9}); // left motors are on ports 18 and 9, they are both reversed
+
 // right motor group
-pros::MotorGroup rightMotors({7, 8});
+pros::MotorGroup rightMotors({3, 2});
 
 // IMU
-pros::Imu imu(5);
+pros::Imu imu(1);
 
 // horizontal tracking wheel encoder
-pros::Rotation horizontalEnc(9);
+pros::Rotation horizontalEnc(17);
+
 // vertical tracking wheel encoder
-pros::Rotation verticalEnc(3);
+pros::Rotation verticalEnc(15);
 
 // horizontal tracking wheel
 lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, -0.996);
+
 // vertical tracking wheel
 lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -0.858);
 

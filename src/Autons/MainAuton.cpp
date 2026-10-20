@@ -14,12 +14,23 @@
 
 void mainAuton() 
 {
+    
     // Set Initial Pose
-    chassis.setPose(mp(0, -70, 180));
+    chassis.setPose(0, -70, 0);
 
     // Spin Toggel to Red
     // (Insert toggel mechanism code here)
-    
+    chassis.moveToPoint(0, -55, 1500);
+
+    chassis.turnToHeading(180, 1000);
+
+    chassis.moveToPoint(0, -70, 1000);
+
+    chassis.moveToPoint(0, -60, 1000, {.forwards = false});
+
+    chassis.moveToPoint(0, -70, 500);
+
+    chassis.moveToPoint(0, -60, 1000, {.forwards = false});
 
     /*
     // Move Backwards

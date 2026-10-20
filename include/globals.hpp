@@ -5,20 +5,24 @@
 #include "TitanReset/TitanReset.hpp"
 
 // -------- MOTORS -------- //
-extern pros::Motor clawMotor;
 extern pros::Motor intakeMotor;
-extern pros::MotorGroup cascadeMotors;
+extern pros::MotorGroup liftMotors;
 
 extern bool intakeActive;
-extern bool cascadeActive;
-
+extern bool liftActive;
 
 // -------- PNEUMATICS -------- //
-// None for now
+extern bool clawExtended;
+extern pros::adi::DigitalOut clawPiston;
+
+// -------- Lift Variables --------//
+extern bool liftGoingToTarget;
+extern double liftTarget;
+extern double kP;
 
 // -------- SENSORS --------//
 extern pros::AIVision ai_sensor;
-extern pros::Rotation cascadeRotation;
+extern pros::Rotation liftSensor;
 
 // -------- Variables -------- //
 // The current max drive speed (out of 127), shared between auton and driver control

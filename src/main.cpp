@@ -20,7 +20,7 @@ void initialize() {
     
 
     liftInit(); // lift must be fully down when the robot powers on
-    pros::Task liftTask(liftTaskLoop);
+    //pros::Task liftTask(liftTaskLoop);
 	
 
 	controller.rumble(".");
@@ -201,7 +201,7 @@ void opcontrol() {
         chassis.tank(leftY, rightY);
     
 
-        //// =========================================================
+        // =========================================================
         // INTAKE
         // L1 = Toggle IN
         // L2 = Hold OUT
@@ -223,24 +223,47 @@ void opcontrol() {
 
 
         // ================================
-        // CASCADE
-        // R1 = FULL UP
-        // R2 = FULL DOWN
+        // LIFT
+        // R1 = Lift Manual Up
+        // R2 = Lift Manual Down
+        // 
         // ================================
 
-
+        // Lift Manual Control //
         if (controller.get_digital(DIGITAL_R1)) {
-            setCascade(127);  // Cascade up while R1 is held
-        }
+            setLift(127); // Lift up while R1 is held
+            liftGoingToTarget = false; // Cancel any target movement
+        } 
         else if (controller.get_digital(DIGITAL_R2)) {
-            setCascade(-127); // Cascade down while R2 is held
-        }
-        else {
-            setCascade(0);  // Cascade off
+            setLift(-127); // Lift down while R2 is held
+            liftGoingToTarget = false; // Cancel any target movement
+        } 
+        else if (!liftGoingToTarget) {
+            setLift(0); // Stop lift if no buttons are pressed and not moving to a target
         }
 
-        //liftUpdate(controller);
+        // Lift Target Macro \\ 
 
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+            // Cycle through lift target positions: top, middle, bottom
+
+            liftGoingToTarget = true;
+        }
+
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+            clawSwitch(); // Toggle claw piston
+        }
+
+         // A button: place sequence
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+            place(); // Macro to place pin onto goal
+        }
+
+        // Move the lift toward its target
+        if (liftGoingToTarget) {
+            double error = liftTarget - getArmAngle();
+            liftMotors.move(error * kP);
+        }
 
  
     /* Testing without a comp switch only
@@ -256,6 +279,4 @@ void opcontrol() {
 
     pros::delay(20);
   }
-
-
 }
