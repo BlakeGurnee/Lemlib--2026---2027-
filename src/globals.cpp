@@ -2,8 +2,13 @@
 #include "globals.hpp"
 
 // -------- MOTORS --------//
+<<<<<<< HEAD
 pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 4 and is reversed
 pros::MotorGroup liftMotors({20, -11}, pros::v5::MotorGears::red); // Motor group for the lift, motors are on ports 20 and 11 and one of them is reversed
+=======
+pros::Motor intakeMotor(6, pros::v5::MotorGears::blue); // Motor is a blue motor on port 6 and is reversed
+pros::MotorGroup cascadeMotors({12, 4});
+>>>>>>> 7ab6bfeb84620925de3f66de8756a7b9ee251f53
 
 bool intakeActive = false; // Intake is not active by default
 bool liftActive = false; // Lift is not moving to a target by default
