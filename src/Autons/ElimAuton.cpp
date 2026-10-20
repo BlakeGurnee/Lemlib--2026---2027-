@@ -14,5 +14,22 @@
 
 void elimAuton() 
 {
+
+    // Set Initial Pose
+    chassis.setPose(mp(0, -70, 0));
+
+    // Spin Toggel to Red
+    // (Insert toggel mechanism code here)
+    chassis.moveToPoint(0, m(-55), 1500);
+
+    chassis.turnToHeading(m(180), 1000);
+
+    chassis.moveToPoint(0, m(-70), 1000);
+
+    chassis.moveToPoint(0, m(-60), 1000, {.forwards = false});
+
+    chassis.moveToPoint(0, m(-70), 500);
+
+    chassis.moveToPoint(0, m(-60), 1000, {.forwards = false});
   
 }
