@@ -18,7 +18,6 @@ void mainAuton()
     // Set Initial Pose
     chassis.setPose(0, -70, 0);
 
-<<<<<<< HEAD
     // Spin Toggel to Red
     // (Insert toggel mechanism code here)
     chassis.moveToPoint(0, -55, 1500);
@@ -32,12 +31,6 @@ void mainAuton()
     chassis.moveToPoint(0, -70, 500);
 
     chassis.moveToPoint(0, -60, 1000, {.forwards = false});
-=======
-    // Spin Toggle to Red
-    // (Insert toggle mechanism code here)
-    
-    
->>>>>>> 7ab6bfeb84620925de3f66de8756a7b9ee251f53
 
     /*
     // Move Backwards
