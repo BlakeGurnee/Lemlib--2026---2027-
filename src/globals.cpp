@@ -18,7 +18,7 @@ double liftTarget = 0;            // where we want the lift (degrees)
 double kP = 3;                   // bigger = faster/stronger, too big = shaky
 
 // -------- SENSORS --------//
-pros::AIVision ai_sensor(10); // Sensor for detecting AprilTags (Implementaion coming soon!)
+pros::AIVision ai_sensor(12); // Sensor for detecting AprilTags (Implementaion coming soon!)
 pros::Rotation liftSensor(16); // Lift rotation sensor on port 16
 
 
@@ -30,13 +30,13 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // Drivetrain motors \\ 
 
 // Left motor group
-pros::MotorGroup leftMotors({-18, -9}); // left motors are on ports 18 and 9, they are both reversed
+pros::MotorGroup leftMotors({-18, -8}); // left motors are on ports 18 and 9, they are both reversed
 
 // right motor group
 pros::MotorGroup rightMotors({3, 2});
 
 // IMU
-pros::Imu imu(1);
+pros::Imu imu(9);
 
 // horizontal tracking wheel encoder
 pros::Rotation horizontalEnc(17);
@@ -61,7 +61,7 @@ lemlib::Drivetrain drivetrain(
 );
 
 // controllers
-lemlib::ControllerSettings linearController(10, 0, 3, 3, 1, 100, 3, 500, 20);
+lemlib::ControllerSettings linearController(10, 0, 10, 3, 1, 100, 3, 500, 20);
 lemlib::ControllerSettings angularController(2, 0, 10, 3, 1, 100, 3, 500, 0);
 
 // sensors

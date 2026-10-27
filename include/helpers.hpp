@@ -7,3 +7,4 @@ void zeroLift();
 void liftInit();
 void place();
 void clawSwitch();
+void liftAndPlace();

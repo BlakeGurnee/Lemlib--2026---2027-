@@ -25,6 +25,21 @@ void place() {
     liftMotors.brake();                       // stop lift
 }
 
+void liftAndPlace() {
+    liftGoingToTarget = false;                 // Cancel any target movement
+    liftMotors.move_voltage(8000);           // forward at 8 volts
+    pros::delay(200);                         // wait 0.2 seconds
+    liftMotors.move_voltage(-8000);           // reverse at 8 volts
+    pros::delay(200);                         // wait 0.2 seconds
+    clawSwitch();                             // Toggle claw piston
+    liftMotors.brake();                       // stop lift
+}
+
+void lift(int liftPosition) {
+    liftGoingToTarget = true;                 // Enable target movement
+    liftTarget = liftPosition;                // Set the desired lift position
+}
+
 // This function zeros the lift by moving it down until it hits the bottom limit and then resets the sensor position
 void zeroLift() {
     liftSensor.reset_position(); // Reset the lift sensor position to zero

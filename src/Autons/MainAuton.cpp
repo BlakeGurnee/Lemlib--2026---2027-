@@ -14,23 +14,66 @@
 
 void mainAuton() 
 {
-    
     // Set Initial Pose
     chassis.setPose(mp(0, -70, 0));
 
     // Spin Toggel to Red
     // (Insert toggel mechanism code here)
-    chassis.moveToPoint(0, m(-55), 1500);
 
-    chassis.turnToHeading(m(180), 1000);
+    // Drive forward
+    chassis.moveToPoint(0, m(-47.5), 500);
 
-    chassis.moveToPoint(0, m(-70), 1000);
+    // Turn to face goal #3
+    chassis.turnToHeading(270, 500);
 
-    chassis.moveToPoint(0, m(-60), 1000, {.forwards = false});
+    // Drive to goal #3
+    chassis.moveToPoint(-20, m(-47.5), 500);
 
-    chassis.moveToPoint(0, m(-70), 500);
+    // Score in goal #3
+    liftAndPlace();
 
-    chassis.moveToPoint(0, m(-60), 1000, {.forwards = false});
+    // Back up a bit
+    chassis.moveToPoint(-12, m(-47.5), 500, {.forwards = false});
+
+    // Turn to face the pin and cup against the wall
+    chassis.turnToHeading(205, 500);
+
+    // Drive to pin and cup
+    chassis.moveToPoint(23, m(-67.5), 500, {.maxSpeed = 80});
+
+    // Pick up pin and cup
+    clawPiston.set_value(true); // Activate claw piston to grab pin and cup
+
+    // Move back
+    chassis.moveToPoint(-12, m(-47.5), 500, {.forwards = false, .maxSpeed = 80});
+
+    // Turn to face goal #3
+    chassis.turnToHeading(270, 500);
+
+    // 
+
+    /*
+    // Swing off goal to face the pin and cup at the top
+    chassis.swingToHeading(mh(0), mside(lemlib::DriveSide::LEFT), 1000,
+                       {.direction = mdir(lemlib::AngularDirection::CW_CLOCKWISE)});
+
+    
+    // Drive to pin and cup
+    chassis.moveToPoint(-23.5, m(-25), 500, {.maxSpeed = 80});
+
+    // Pick up pin and cup
+    clawPiston.set_value(true); // Activate claw piston to grab pin and cup
+
+    // Turn Around to face goal #3
+    chassis.turnToHeading(mh(180), 500);
+
+    // Drive back to goal #3
+    chassis.moveToPoint(-23.5, m(-43.5), 500);
+
+    // Score in goal #3
+    liftAndPlace();
+
+    */
 
     /*
     // Move Backwards
@@ -49,8 +92,8 @@ void mainAuton()
 
     // Swing off goal
     chassis.swingToHeading(
-        90,
-        lemlib::DriveSide::RIGHT,
+        mh(90),
+        mside(lemlib::DriveSide::RIGHT),
         800,
         {.maxSpeed = 60}
     );
