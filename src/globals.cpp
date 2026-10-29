@@ -17,6 +17,11 @@ bool liftGoingToTarget = false;   // true = lift is moving to a position
 double liftTarget = 0;            // where we want the lift (degrees)
 double kP = 3;                   // bigger = faster/stronger, too big = shaky
 
+// Lift presets: bottom, middle, top
+const int liftPresets[] = {0, 85, 170};
+const int numLiftPresets = sizeof(liftPresets) / sizeof(liftPresets[0]);
+int liftPresetIndex = -1;
+
 // -------- SENSORS --------//
 pros::AIVision ai_sensor(12); // Sensor for detecting AprilTags (Implementaion coming soon!)
 pros::Rotation liftSensor(16); // Lift rotation sensor on port 16
@@ -61,8 +66,9 @@ lemlib::Drivetrain drivetrain(
 );
 
 // controllers
-lemlib::ControllerSettings linearController(10, 0, 10, 3, 1, 100, 3, 500, 20);
-lemlib::ControllerSettings angularController(2, 0, 10, 3, 1, 100, 3, 500, 0);
+lemlib::ControllerSettings angularController(3.0, 0, 15, 0, 1, 100, 3, 500, 0);
+lemlib::ControllerSettings linearController(12, 0.004, 90, 0, 1, 100, 3, 500, 0);
+
 
 // sensors
 lemlib::OdomSensors sensors(&vertical, nullptr, &horizontal, nullptr, &imu); // chassis with odom

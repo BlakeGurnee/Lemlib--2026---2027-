@@ -1,5 +1,9 @@
 #include "main.h"
 
+// Lift controller tuning
+const double LIFT_KP = 250.0;
+const double LIFT_TOLERANCE = 2.0;
+
 // Sets the intake motors to the specified power
 void setIntake(int intakePower) {
     intakeMotor.move(intakePower);
@@ -15,14 +19,60 @@ double getArmAngle() {
     return liftSensor.get_position() / 100.0;
 }
 
+// Sets a target for the lift controller
+void lift(int liftPosition) {
+    liftTarget = liftPosition;
+    liftGoingToTarget = true;
+}
+
+// Waits until the lift reaches its target position
+void waitForLift() {
+    while (liftGoingToTarget) {
+        pros::delay(10);
+    }
+}
+
+// Lift controller task
+void liftControlTask() {
+    while (true) {
+        if (liftGoingToTarget) {
+            double error = liftTarget - getArmAngle();
+
+            if (std::fabs(error) <= LIFT_TOLERANCE) {
+                liftMotors.move_voltage(0);
+                liftMotors.brake();
+                liftGoingToTarget = false;
+            } else {
+                double output = LIFT_KP * error;
+
+                // Limit output to +/- 12 volts
+                if (output > 12000) output = 12000;
+                if (output < -12000) output = -12000;
+
+                liftMotors.move_voltage(static_cast<int>(output));
+            }
+        }
+
+        pros::delay(10);
+    }
+}
+
 // ----- Place sequence ----- //
 // This function performs the sequence to place a pin onto a goal
 void place() {
-    liftGoingToTarget = false;                 // Cancel any target movement
-    liftMotors.move_voltage(-8000);           // reverse at 8 volts
-    pros::delay(200);                         // wait 0.2 seconds
-    clawPiston.set_value(false);              // Deactivate claw piston
-    liftMotors.brake();                       // stop lift
+    liftGoingToTarget = false;
+    pros::delay(20);
+
+    // Lower the lift slightly
+    liftMotors.move_voltage(-8000);
+    pros::delay(200);
+
+    // Stop the lift
+    liftMotors.brake();
+
+    // Open the claw and synchronize its state
+    clawExtended = false;
+    clawPiston.set_value(false);                     // stop lift
 }
 
 void liftAndPlace() {
@@ -35,17 +85,12 @@ void liftAndPlace() {
     liftMotors.brake();                       // stop lift
 }
 
-void lift(int liftPosition) {
-    liftGoingToTarget = true;                 // Enable target movement
-    liftTarget = liftPosition;                // Set the desired lift position
-}
 
 // This function zeros the lift by moving it down until it hits the bottom limit and then resets the sensor position
 void zeroLift() {
-    liftSensor.reset_position(); // Reset the lift sensor position to zero
     setLift(-127); // Move the lift down at full speed
     pros::delay(300); // Wait for 0.3 seconds to ensure the lift is moving down
-
+    setLift(0); // Stop the lift motors
     // Once the lift has hit the bottom, stop the motors and reset the sensor position
     liftSensor.reset_position();
 }

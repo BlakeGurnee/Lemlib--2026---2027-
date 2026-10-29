@@ -20,6 +20,10 @@ extern bool liftGoingToTarget;
 extern double liftTarget;
 extern double kP;
 
+extern const int liftPresets[];
+extern const int numLiftPresets;
+extern int liftPresetIndex;
+
 // -------- SENSORS --------//
 extern pros::AIVision ai_sensor;
 extern pros::Rotation liftSensor;

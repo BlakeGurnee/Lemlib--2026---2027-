@@ -7,7 +7,7 @@ bool autonConfirmed = false;
 // All 11 choices (10 match autons + Skills), in switch-case order.
 // autonSelection ends up being (index + 1), matching your switch(autonSelection) exactly.
 static const char* kAutonLabels[11] = {
-    "Red Left Main", "Red Right Main", "Red Left Elim", "Red Right Elim", "Red SWP",
+    "Red Right Main", "Red Left Main", "Red Left Elim", "Red Right Elim", "Red SWP",
     "Blue Left Main", "Blue Right Main", "Blue Left Elim", "Blue Right Elim", "Blue SWP",
     "Skills",
 };
@@ -15,7 +15,7 @@ static const char* kAutonLabels[11] = {
 // caffeine_match_start -- converted via the LVGL image converter, no SD
 // card or gif involved). See CHANGES.md for how these were made.
 static const lv_img_dsc_t* kAutonRouteImages[11] = {
-    &route_red_left_main, &route_red_right_main, &route_red_left_elim,
+    &route_red_right_main, &route_red_left_main, &route_red_left_elim,
     &route_red_right_elim, &route_red_swp, &route_blue_left_main,
     &route_blue_right_main, &route_blue_left_elim, &route_blue_right_elim,
     &route_blue_swp, &route_skills,

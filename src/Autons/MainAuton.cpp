@@ -17,38 +17,117 @@ void mainAuton()
     // Set Initial Pose
     chassis.setPose(mp(0, -70, 0));
 
-    // Spin Toggel to Red
-    // (Insert toggel mechanism code here)
+    // Lift to 85 degrees to activate toggle
+    lift(85);
 
-    // Drive forward
-    chassis.moveToPoint(0, m(-47.5), 500);
+    // Back up while lifting to ensure toggle is set
+    chassis.moveToPoint(0, m(-70), 1000, {.maxSpeed = 60});
 
-    // Turn to face goal #3
-    chassis.turnToHeading(270, 500);
+    // Delay to ensure it's accurate (shorten if low on time)
+    pros::delay(1000);
+
+    // Move to central point in between goals
+    chassis.moveToPoint(0, m(-52), 1000, {.maxSpeed = 60});
+
+    // Delay to give time to set and for accuracy
+    pros::delay(500);
+
+    // Turn to the alliance goal
+    chassis.turnToHeading(270, 1000);
+
+    // Wait till turn finishes
+    pros::delay(500);
 
     // Drive to goal #3
-    chassis.moveToPoint(-20, m(-47.5), 500);
+    chassis.moveToPoint(-20, m(-50), 1000, {.maxSpeed = 70});
 
-    // Score in goal #3
-    liftAndPlace();
+    // Delay
+    pros::delay(500);
 
-    // Back up a bit
-    chassis.moveToPoint(-12, m(-47.5), 500, {.forwards = false});
+    // Move lift Down to score
+    lift(0); 
 
-    // Turn to face the pin and cup against the wall
-    chassis.turnToHeading(205, 500);
+    // Wait for lift to reach position
+    pros::delay(800); 
 
-    // Drive to pin and cup
-    chassis.moveToPoint(23, m(-67.5), 500, {.maxSpeed = 80});
+    // Toggle claw piston to release pin and cup
+    clawSwitch(); 
 
-    // Pick up pin and cup
-    clawPiston.set_value(true); // Activate claw piston to grab pin and cup
+    // Move backwards and prepare to get pin on the wall
+    chassis.moveToPoint(-10, m(-50), 1000, {.forwards = false, .maxSpeed = 50});
 
-    // Move back
-    chassis.moveToPoint(-12, m(-47.5), 500, {.forwards = false, .maxSpeed = 80});
+    // Turn to face the pin on the wall
+    chassis.turnToHeading(220, 1000);
 
-    // Turn to face goal #3
-    chassis.turnToHeading(270, 500);
+    // Small delay
+    pros::delay(500);
+
+    // Move to the pin on the wall
+    chassis.moveToPoint(-30, m(-75), 1000, {.maxSpeed = 65});
+
+    // Delay (shorten if low on time)
+    pros::delay(1000);
+
+    // Toggle claw piston to grab pin and cup
+    clawSwitch(); 
+
+    // Move lift up to pick up pin and cup
+    lift(60); 
+
+    // Move back to mid point in between goals
+    chassis.moveToPoint(0, m(-50), 1000, {.forwards = false, .maxSpeed = 80});
+
+    // Turn to face alliance goal
+    chassis.turnToHeading(90, 1000, {.maxSpeed = 80});
+
+    // Move to the alliance goal
+    chassis.moveToPoint(20, m(-52), 1000);
+
+    // Delay for accuracy
+    pros::delay(500);
+
+    // Move lift Down to score
+    lift(0); 
+
+    chassis.setPose(mp(20, -52, 90));
+
+    // Wait for lift to reach position
+    pros::delay(800); 
+
+    // Toggle claw piston to release pin and cup
+    clawSwitch(); 
+
+    // Back up again to mid point
+    chassis.moveToPoint(10, m(-50), 1000, {.forwards = false, .maxSpeed = 50});
+
+    // Turn to face the second pin and cup against the wall
+    chassis.turnToHeading(140, 1000);
+
+    // Drive to the pin and cup
+    chassis.moveToPoint(30, m(-75), 1000, {.maxSpeed = 65});
+
+    // Clamp and pickup the pin and cup
+
+    // Delay (shorten if low on time)
+    pros::delay(1000);
+
+    // Toggle claw piston to grab pin and cup
+    clawSwitch(); 
+
+    // Move lift up to pick up pin and cup
+    lift(60); 
+
+    // Back up again to mid point
+
+    // turn to face alliance goal
+
+    // Drive to alliance goal
+
+    // Place pin onto alliance goal
+
+
+
+
 
     // 
 

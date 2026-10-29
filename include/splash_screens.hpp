@@ -10,8 +10,8 @@ LV_IMG_DECLARE(caffeine_match_start);
 // Static field-path route pictures, one per auton -- converted the exact
 // same way as the two images above (via the LVGL image converter). See
 // route_pictures/ and CHANGES.md for how to generate/convert these.
-LV_IMG_DECLARE(route_red_left_main);
 LV_IMG_DECLARE(route_red_right_main);
+LV_IMG_DECLARE(route_red_left_main);
 LV_IMG_DECLARE(route_red_left_elim);
 LV_IMG_DECLARE(route_red_right_elim);
 LV_IMG_DECLARE(route_red_swp);

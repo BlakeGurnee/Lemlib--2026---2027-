@@ -3,6 +3,7 @@
 #include "TitanReset/TitanReset.hpp"
 
 pros::Task* liftTask = nullptr;
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -20,8 +21,11 @@ void initialize() {
     
 
     liftInit(); // lift must be fully down when the robot powers on
-    //pros::Task liftTask(liftTaskLoop);
-	
+
+    if (liftTask == nullptr) {
+        liftTask = new pros::Task(liftControlTask);
+    }
+
 
 	controller.rumble(".");
 
@@ -77,17 +81,17 @@ void autonomous()
     
     // Run the selected autonomous routine
     switch(autonSelection) {
-        case 1: // Red Left Main
-            pros::lcd::print(0, "Running Red Left Main");
-            MIRROR = true; // Set Auton Mirroring to true for Red Left Main
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Main
-            mainAuton();
-            break;
-
-        case 2: // Red Right Main (source)
+        case 1: // Red Right Main
             pros::lcd::print(0, "Running Red Right Main");
             MIRROR = false; // Set Auton Mirroring to false for Red Right Main
             dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Main
+            mainAuton();
+            break;
+
+        case 2: // Red Left Main
+            pros::lcd::print(0, "Running Red Left Main");
+            MIRROR = true; // Set Auton Mirroring to true for Red Left Main
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Main
             mainAuton();
             break;
 
@@ -244,10 +248,10 @@ void opcontrol() {
 
         // Lift Target Macro \\ 
 
+        // Y button: cycle through lift presets
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            // Cycle through lift target positions: top, middle, bottom
-
-            liftGoingToTarget = true;
+            liftPresetIndex = (liftPresetIndex + 1) % numLiftPresets;
+            lift(liftPresets[liftPresetIndex]);
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {

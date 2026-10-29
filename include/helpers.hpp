@@ -8,3 +8,6 @@ void liftInit();
 void place();
 void clawSwitch();
 void liftAndPlace();
+void lift(int liftPosition);
+void liftControlTask();
+void waitForLift();
