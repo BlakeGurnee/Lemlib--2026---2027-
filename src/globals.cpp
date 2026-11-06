@@ -17,6 +17,8 @@ bool liftGoingToTarget = false;   // true = lift is moving to a position
 double liftTarget = 0;            // where we want the lift (degrees)
 double kP = 3;                   // bigger = faster/stronger, too big = shaky
 
+bool autonMode = false;
+
 // Lift presets: bottom, middle, top
 const int liftPresets[] = {0, 85, 170};
 const int numLiftPresets = sizeof(liftPresets) / sizeof(liftPresets[0]);

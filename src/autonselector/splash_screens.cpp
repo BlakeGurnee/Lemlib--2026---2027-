@@ -7,24 +7,28 @@ bool autonConfirmed = false;
 // All 11 choices (10 match autons + Skills), in switch-case order.
 // autonSelection ends up being (index + 1), matching your switch(autonSelection) exactly.
 static const char* kAutonLabels[11] = {
-    "Red Right Main", "Red Left Main", "Red Left Elim", "Red Right Elim", "Red SWP",
-    "Blue Left Main", "Blue Right Main", "Blue Left Elim", "Blue Right Elim", "Blue SWP",
-    "Skills",
+    "Red Right Main", "Red Left Main", "Blue Right Main", "Blue Left Main",
+    "Red Right Elim", "Red Left Elim", "Blue Right Elim", "Blue Left Elim",
+    "Red SWP", "Blue SWP", "Skills",
 };
+
 // Static, compiled-in route pictures (same mechanism as caffeine_splash /
 // caffeine_match_start -- converted via the LVGL image converter, no SD
 // card or gif involved). See CHANGES.md for how these were made.
 static const lv_img_dsc_t* kAutonRouteImages[11] = {
-    &route_red_right_main, &route_red_left_main, &route_red_left_elim,
-    &route_red_right_elim, &route_red_swp, &route_blue_left_main,
-    &route_blue_right_main, &route_blue_left_elim, &route_blue_right_elim,
+    &route_red_right_main, &route_red_left_main, &route_blue_right_main,
+    &route_blue_left_main, &route_red_right_elim, &route_red_left_elim,
+    &route_blue_right_elim, &route_blue_left_elim, &route_red_swp,
     &route_blue_swp, &route_skills,
 };
+
 // Accent bar color per row: red alliance / blue alliance / skills (coffee tan).
 static lv_color_t accentColorFor(int index) {
-    if (index < 5) return ALLIANCE_RED;
-    if (index < 10) return ALLIANCE_BLUE;
-    return CAFFEINE_TAN;
+    switch (index) {
+        case 0: case 1: case 4: case 5: case 8: return ALLIANCE_RED;   // red rows
+        case 2: case 3: case 6: case 7: case 9: return ALLIANCE_BLUE;  // blue rows
+        default: return CAFFEINE_TAN;                                  // Skills
+    }
 }
 
 // Store objects globally so click handlers and selectIndex() can reach them

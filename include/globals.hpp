@@ -20,6 +20,8 @@ extern bool liftGoingToTarget;
 extern double liftTarget;
 extern double kP;
 
+extern bool autonMode;
+
 extern const int liftPresets[];
 extern const int numLiftPresets;
 extern int liftPresetIndex;

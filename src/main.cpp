@@ -87,71 +87,71 @@ void autonomous()
             dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Main
             mainAuton();
             break;
-
+ 
         case 2: // Red Left Main
             pros::lcd::print(0, "Running Red Left Main");
             MIRROR = true; // Set Auton Mirroring to true for Red Left Main
             dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Main
             mainAuton();
             break;
-
-        case 3: // Red Left Elim
-            pros::lcd::print(0, "Running Red Left Elim");
-            MIRROR = true; // Set Auton Mirroring to true for Red Left Elim
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Elim
-            elimAuton();
-            break;
-
-        case 4: // Red Right Elim (source)
-            pros::lcd::print(0, "Running Red Right Elim");
-            MIRROR = false; // Set Auton Mirroring to false for Red Right Elim
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Elim
-            elimAuton();
-            break;
-
-        case 5: // Red SWP
-            pros::lcd::print(0, "Running Red SWP");
-            SWP();
-            break;
-
-        case 6: // Blue Left Main
-            pros::lcd::print(0, "Running Blue Left Main");
-            MIRROR = true; // Set Auton Mirroring to true for Blue Left Main
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Main
-            mainAuton();
-            break;
-
-        case 7: // Blue Right Main
+ 
+        case 3: // Blue Right Main
             pros::lcd::print(0, "Running Blue Right Main");
             MIRROR = true; // Set Auton Mirroring to true for Blue Right Main
             dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Main
             mainAuton();
             break;
-
+ 
+        case 4: // Blue Left Main
+            pros::lcd::print(0, "Running Blue Left Main");
+            MIRROR = true; // Set Auton Mirroring to true for Blue Left Main
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Main
+            mainAuton();
+            break;
+ 
+        case 5: // Red Right Elim (source)
+            pros::lcd::print(0, "Running Red Right Elim");
+            MIRROR = false; // Set Auton Mirroring to false for Red Right Elim
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Elim
+            elimAuton();
+            break;
+ 
+        case 6: // Red Left Elim
+            pros::lcd::print(0, "Running Red Left Elim");
+            MIRROR = true; // Set Auton Mirroring to true for Red Left Elim
+            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Elim
+            elimAuton();
+            break;
+ 
+        case 7: // Blue Right Elim
+            pros::lcd::print(0, "Running Blue Right Elim");
+            MIRROR = true; // Set Auton Mirroring to true for Blue Right Elim
+            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Elim
+            elimAuton();
+            break;
+ 
         case 8: // Blue Left Elim
             pros::lcd::print(0, "Running Blue Left Elim");
             MIRROR = true; // Set Auton Mirroring to true for Blue Left Elim
             dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Elim
             elimAuton();
             break;
-
-        case 9: // Blue Right Elim
-            pros::lcd::print(0, "Running Blue Right Elim");
-            MIRROR = true; // Set Auton Mirroring to true for Blue Right Elim
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Elim
-            elimAuton();
+ 
+        case 9: // Red SWP
+            pros::lcd::print(0, "Running Red SWP");
+            SWP();
             break;
-
+ 
         case 10: // Blue SWP
             pros::lcd::print(0, "Running Blue SWP");
             SWP();
             break;
-
+ 
         case 11: // SKILLS
             pros::lcd::print(0, "Running SKILLS");
             skillsMain();
             break;
-
+ 
         default:
             pros::lcd::print(0, "No auton selected!");
             break;
@@ -166,25 +166,22 @@ void opcontrol() {
  // B = Regular → Medium → Slow
 // =========================================================
   
-  // 0 = regular, 1 = medium, 2 = slow — cycles in that order each press
+  // 0 = regular, 1 = medium — cycles in that order each press
   int speedMode = 0;
 
   while (true) {
 
         // Three way speed rotation with the B button. Each press cycles through the three modes.
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-            // Move to the next mode, wrapping back to 0 after 2
-            speedMode = (speedMode + 1) % 3;
+            // Move to the next mode, wrapping back to 0 after 1
+            speedMode = (speedMode + 1) % 2;
 
             if (speedMode == 0) {
                 drive_speed = DRIVE_SPEED_MAX; // Regular 
                 controller.print(0, 0, "Regular Speed");
-            } else if (speedMode == 1) {
+            } else {
                 drive_speed = DRIVE_SPEED_MAX * 0.85; // Medium Speed
                 controller.print(0, 0, "Medium Speed");
-            } else {
-                drive_speed = DRIVE_SPEED_MAX * 0.80; // Slow Speed
-                controller.print(0, 0, "Slow Speed");
             }
         }
 
@@ -254,7 +251,7 @@ void opcontrol() {
             lift(liftPresets[liftPresetIndex]);
         }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             clawSwitch(); // Toggle claw piston
         }
 
