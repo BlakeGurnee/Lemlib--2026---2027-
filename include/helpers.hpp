@@ -11,3 +11,4 @@ void liftAndPlace();
 void lift(int liftPosition);
 void liftControlTask();
 void waitForLift();
+void alignAndScore(int goalNumber);

@@ -12,6 +12,8 @@ bool liftActive = false; // Lift is not moving to a target by default
 bool clawExtended = false; // Piston is retracted by default
 pros::adi::DigitalOut clawPiston('D'); // Piston is on port D
 
+pros::adi::DigitalIn autonButton('B');
+
 // -------- Lift Variables --------//
 bool liftGoingToTarget = false;   // true = lift is moving to a position
 double liftTarget = 0;            // where we want the lift (degrees)
@@ -25,7 +27,7 @@ const int numLiftPresets = sizeof(liftPresets) / sizeof(liftPresets[0]);
 int liftPresetIndex = -1;
 
 // -------- SENSORS --------//
-pros::AIVision ai_sensor(12); // Sensor for detecting AprilTags (Implementaion coming soon!)
+pros::AIVision aiVision(12); // Sensor for detecting AprilTags (Implementaion coming soon!)
 pros::Rotation liftSensor(16); // Lift rotation sensor on port 16
 
 
@@ -96,9 +98,9 @@ lemlib::Chassis chassis(
 
 // parallel offset, perpendicular offset, port
 tr_sensor north({5.823, -4.694}, 10);
-tr_sensor east({5.137, 3.23}, 11);
-tr_sensor south({4.861, 5.25}, 12);
-tr_sensor west({5.137, 3.744}, 13);
+tr_sensor east({5.137, 3.23}, 4);
+tr_sensor south({4.861, 5.25}, 6);
+tr_sensor west({5.137, 3.744}, 5);
 
 // dsr system
 tr_chassis dsr_system(&chassis, {&north, &east, &south, &west});

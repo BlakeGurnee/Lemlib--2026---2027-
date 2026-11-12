@@ -107,3 +107,26 @@ void clawSwitch() {
     clawExtended = !clawExtended;
     clawPiston.set_value(clawExtended);
 }
+
+void alignAndScore(int goal) {
+    // Start AI Vision detection
+    startDetection();
+
+    // Align to alliance goal with AI Vision
+    if (alignToGoal(goal)) {
+        // Move lift Down to score
+        lift(0);
+
+        // Wait for lift to reach position
+        pros::delay(500);
+
+        // Toggle claw piston to release pin and cup
+        clawSwitch();
+
+        // Delay to ensure it's accurate (shorten if low on time)
+        pros::delay(200);
+    }
+
+    // Stop AI Vision detection
+    stopDetection();
+}

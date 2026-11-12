@@ -21,6 +21,163 @@ void initialize() {
     
 
     liftInit(); // lift must be fully down when the robot powers on
+    
+    #include <cerrno>
+#include <cstdio>
+
+// ==========================================
+// AI VISION INITIALIZATION
+// ==========================================
+
+    printf("\n");
+    printf("========================================\n");
+    printf("       AI VISION INITIALIZATION         \n");
+    printf("========================================\n");
+
+    // --------------------------------------
+    // STEP 1: RESET SENSOR
+    // --------------------------------------
+
+    printf("\n[AIVISION] Resetting sensor...\n");
+
+    errno = 0;
+    int resetResult = aiVision.reset();
+    int resetError = errno;
+
+    printf("[AIVISION] Reset result: %d | errno: %d\n",
+           resetResult, resetError);
+
+    if (resetResult != PROS_SUCCESS) {
+        printf("[ERROR] Failed to reset AI Vision!\n");
+    }
+
+    pros::delay(100);
+
+    // --------------------------------------
+// STEP 2: DISABLE UNNECESSARY DETECTION
+// --------------------------------------
+
+printf("\n[AIVISION] Disabling colors...\n");
+
+errno = 0;
+int disableColorsResult = aiVision.disable_detection_types(
+    pros::AivisionModeType::colors
+);
+int disableColorsError = errno;
+
+printf("[AIVISION] Disable colors: %d | errno: %d\n",
+       disableColorsResult, disableColorsError);
+
+
+printf("\n[AIVISION] Disabling objects...\n");
+
+errno = 0;
+int disableObjectsResult = aiVision.disable_detection_types(
+    pros::AivisionModeType::objects
+);
+int disableObjectsError = errno;
+
+printf("[AIVISION] Disable objects: %d | errno: %d\n",
+       disableObjectsResult, disableObjectsError);
+
+    // --------------------------------------
+    // STEP 3: CONFIGURE APRILTAG FAMILY
+    // --------------------------------------
+
+    printf("\n[AIVISION] Configuring AprilTag family...\n");
+
+    errno = 0;
+    int familyResult = aiVision.set_tag_family(
+        pros::AivisionTagFamily::tag_21H7,
+        true
+    );
+    int familyError = errno;
+
+    printf("[AIVISION] Tag family: 21H7\n");
+    printf("[AIVISION] Family result: %d | errno: %d\n",
+           familyResult, familyError);
+
+    // --------------------------------------
+    // STEP 4: ENABLE APRILTAG DETECTION
+    // --------------------------------------
+
+    printf("\n[AIVISION] Enabling AprilTag detection...\n");
+
+    errno = 0;
+    int enableResult = aiVision.enable_detection_types(
+        pros::AivisionModeType::tags
+    );
+    int enableError = errno;
+
+    printf("[AIVISION] Enable result: %d | errno: %d\n",
+           enableResult, enableError);
+
+    // --------------------------------------
+    // STEP 5: VERIFY CONFIGURATION
+    // --------------------------------------
+
+    printf("\n[AIVISION] Verifying configuration...\n");
+
+    errno = 0;
+    int enabledModes = aiVision.get_enabled_detection_types();
+    int verifyError = errno;
+
+    printf("[AIVISION] Enabled detection modes: %d\n",
+           enabledModes);
+
+    printf("[AIVISION] Verification errno: %d\n",
+           verifyError);
+
+    if (enabledModes >= 0) {
+        int tagMask = static_cast<int>(
+            pros::AivisionModeType::tags
+        );
+
+        if (enabledModes & tagMask) {
+            printf("[SUCCESS] AprilTag detection is ENABLED.\n");
+        } else {
+            printf("[ERROR] AprilTag detection is DISABLED!\n");
+        }
+    } else {
+        printf("[ERROR] Could not read detection settings!\n");
+    }
+
+    // --------------------------------------
+    // STEP 6: CHECK SENSOR RESPONSE
+    // --------------------------------------
+
+    printf("\n[AIVISION] Checking sensor response...\n");
+
+    pros::delay(200);
+
+    errno = 0;
+    int objectCount = aiVision.get_object_count();
+    int countError = errno;
+
+    printf("[AIVISION] Current detected objects: %d\n",
+           objectCount);
+
+    printf("[AIVISION] Object count errno: %d\n",
+           countError);
+
+    if (objectCount == 0) {
+        printf("[INFO] No objects currently detected.\n");
+        printf("[INFO] This is normal if no tag is visible.\n");
+    }
+
+    if (objectCount < 0) {
+        printf("[ERROR] Failed to retrieve object count!\n");
+    }
+
+    // --------------------------------------
+    // FINISHED
+    // --------------------------------------
+
+    printf("\n========================================\n");
+    printf("       AI VISION INITIALIZED            \n");
+    printf("========================================\n\n");
+
+    
 
     if (liftTask == nullptr) {
         liftTask = new pros::Task(liftControlTask);
@@ -84,56 +241,48 @@ void autonomous()
         case 1: // Red Right Main
             pros::lcd::print(0, "Running Red Right Main");
             MIRROR = false; // Set Auton Mirroring to false for Red Right Main
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Main
             mainAuton();
             break;
  
         case 2: // Red Left Main
             pros::lcd::print(0, "Running Red Left Main");
             MIRROR = true; // Set Auton Mirroring to true for Red Left Main
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Main
             mainAuton();
             break;
  
         case 3: // Blue Right Main
             pros::lcd::print(0, "Running Blue Right Main");
             MIRROR = true; // Set Auton Mirroring to true for Blue Right Main
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Main
             mainAuton();
             break;
  
         case 4: // Blue Left Main
             pros::lcd::print(0, "Running Blue Left Main");
             MIRROR = true; // Set Auton Mirroring to true for Blue Left Main
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Main
             mainAuton();
             break;
  
         case 5: // Red Right Elim (source)
             pros::lcd::print(0, "Running Red Right Elim");
             MIRROR = false; // Set Auton Mirroring to false for Red Right Elim
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270); // Set DSR system to the correct quadrant and heading for Red Right Elim
             elimAuton();
             break;
  
         case 6: // Red Left Elim
             pros::lcd::print(0, "Running Red Left Elim");
             MIRROR = true; // Set Auton Mirroring to true for Red Left Elim
-            dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, -270); // Set DSR system to the correct quadrant and heading for Red Left Elim
             elimAuton();
             break;
  
         case 7: // Blue Right Elim
             pros::lcd::print(0, "Running Blue Right Elim");
             MIRROR = true; // Set Auton Mirroring to true for Blue Right Elim
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Right Elim
             elimAuton();
             break;
  
         case 8: // Blue Left Elim
             pros::lcd::print(0, "Running Blue Left Elim");
             MIRROR = true; // Set Auton Mirroring to true for Blue Left Elim
-            dsr_system.perform_dsr_init(tr_quadrant::POS_POS, -270); // Set DSR system to the correct quadrant and heading for Blue Left Elim
             elimAuton();
             break;
  
@@ -241,6 +390,10 @@ void opcontrol() {
         } 
         else if (!liftGoingToTarget) {
             setLift(0); // Stop lift if no buttons are pressed and not moving to a target
+        }
+
+        if (autonButton.get_new_press() && autonSelection != 0) {
+            autonomous();   // runs your switch(autonSelection)
         }
 
         // Lift Target Macro \\ 

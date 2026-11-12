@@ -27,7 +27,7 @@ extern const int numLiftPresets;
 extern int liftPresetIndex;
 
 // -------- SENSORS --------//
-extern pros::AIVision ai_sensor;
+extern pros::AIVision aiVision;
 extern pros::Rotation liftSensor;
 
 // -------- Variables -------- //
@@ -63,6 +63,7 @@ extern lemlib::OdomSensors sensors;
 extern lemlib::ExpoDriveCurve throttleCurve;
 extern lemlib::ExpoDriveCurve steerCurve;
 extern lemlib::Chassis chassis;
+extern pros::adi::DigitalIn autonButton;
 
 // -- TITAN RESET -- //
 extern tr_sensor north;
